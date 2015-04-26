@@ -1,144 +1,95 @@
-PHOIBLE SEGMENT CONVENTIONS
-===========================
+# PHOIBLE notational conventions
+In order to preserve distinctions both within and across language descriptions, additions to the approved International Phonetic Alphabet (IPA) glyph set were needed; wherever possible these were drawn from the [extIPA symbols for disordered speech](https://www.internationalphoneticassociation.org/sites/default/files/extIPAChart2008.pdf). This page also describes any idiosyncracies in our interpretation and usage of approved IPA glyphs, and conventions regarding glyph ordering. The terms "official IPA", "approved IPA glyphs", or just "IPA" we are referring to [the 2005 update of the full chart](https://www.internationalphoneticassociation.org/content/full-ipa-chart) unless otherwise indicated.
 
-## Diacritic ordering
+## Similar-looking glyphs
+There are a number of IPA symbols that resemble ordinary keyboard glyphs. In all cases the data in PHOIBLE use the codepoints for the official glyphs. The most common of these are summarized here:
 
-Each segment type that is composed of more than one character is first normalized into a canonical decomposition form that adheres to the Unicode Normalization Form D (NFD). The diacritic ordering conventions we describe below deal with Unicode characters that are not in the 'Combining Diacritical Marks' block. The logical ordering of Combining Diacritical Marks is handled by normalization into NFD. Characters sequences that are not handled by NFD must be explicitly ordered, including characters from the 'Spacing Modifier Letters' block, which may appear as diacritics to the user. The ordering is influenced by the linguistic literature. To our knowledge, the IPA does not explicitly state in which order diacritics should appear in segments.
+Keyboard letter               | Representation in PHOIBLE                 | Meaning in IPA
+:-----------------------------|:------------------------------------------|:--------------------
+g `0067` LATIN SMALL LETTER G | ɡ `0261` LATIN SMALL LETTER SCRIPT G      | voiced velar stop
+! `0021` EXCLAMATION POINT    | ǃ `01C3` LATIN LETTER RETROFLEX CLICK     | (post)alveolar click
+&#124; `007C` VERTICAL LINE   | ǀ `01C0` LATIN LETTER DENTAL CLICK        | dental click
+' `0027` APOSTROPHE           | ʼ `02BC` MODIFIER LETTER APOSTROPHE       | ejective
+: `003A` COLON                | ː `02D0` MODIFIER LETTER TRIANGULAR COLON | long
 
-If a segment type contains more than one rightward diacritic, we use this order:
+## Additions to the IPA
+### Fortis / Lenis
+Languages described as having a fortis/plain/lenis distinction that corresponds poorly with the traditional voiced/voiceless-unaspirated/voiceless-aspirated continuum are marked using the voiceless glyph for the “plain” phoneme, and either `͈ ` (`0348` COMBINING DOUBLE VERTICAL LINE BELOW) to mark the fortis articulation, and/or `͉` (`0349` COMBINING LEFT ANGLE BELOW) for the lenis articulation.
 
-- unreleased/lateral release/nasal release → palatalized → labialized → velarized → pharyngealized → aspirated/ejective → long
+### Frictionalized sounds <!-- TODO: say what features we give it -->
+The frictionalized diacritic `͓` (`0353` COMBINING X BELOW) is used in PHOIBLE to represent three types of sounds:
+- Click consonants where the release of the anterior closure involves an ingressive "sucking" sound similar to a fricative. In such cases the diacritic is placed on the click glyph, not on the glyph indicating the posterior closure location. Example: `kǃ͓ʰ`
+- "Frictionalized" vowels (sounds that are phonologically vocalic, but with sufficiently close closures to create buzzing).
+- Fricative sounds at places of articulation that do not have dedicated fricative glyphs (e.g., sounds with voiceless velar lateral frication: `ʟ̥͓`, `ɬʟ̥͓`, `kʟ̥͓ʼ`).
 
-For example, a labialized aspirated long alveolar plosive: <tʷʰː>. If a segment type contains more than one diacritic below the base segment:
+### Non-sibilant fricatives
+Languages described as having a sibilant/non-sibilant distinction among coronal fricatives and affricates are handled using ` ͇` (`0347` COMBINING EQUALS SIGN BELOW) to mark the non-sibilant phoneme.
 
-- the place feature is applied first (dental, laminal, apical, fronted, backed, lowered, raised), then the laryngeal setting (voiced, voiceless, creaky voice, breathy voice), and finally the syllabic or non-syllabic marker (for vowels, ATR gets put on between place and laryngeal setting)
-
-For example, a creaky voiced syllabic dental nasal: <n̪̰̩>
-
-
-## Consonants
-
-There are some common encoding errors that may occur when linguists use the (Latin-based) keyboard to input certain IPA symbols that Unicode has assigned to different code points. These include:
-
-- the IPA symbol <ɡ> LATIN SMALL LETTER SCRIPT G (U+0261) is not the same code point as keyboarded <g> LATIN SMALL LETTER G (U+0067)
-
-- the IPA symbol <ǃ> LATIN LETTER RETROFLEX CLICK (In the IPA, the <ǃ> is an alveolar or postalveolar click, not a retroflex click as stated in the Unicode Standard.) U+01C3 is not the same code point as keyboarded <!> EXCLAMATION POINT U+0021)
-
-- the IPA symbol <ǀ> LATIN LETTER DENTAL CLICK (U$+$01C0) is not the same code point as keyboarded <|> VERTICAL LINE (U+007C)
-
-- the IPA symbol <ʼ> MODIFIER LETTER APOSTROPHE (U+02BC) is not the same code point as keyboarded <'> APOSTROPHE (U+0027)
-
-- the IPA symbol <ː> MODIFIER LETTER TRIANGULAR COLON (U+02D0) is not the same code point as keyboarded <:> COLON (U+003A)
-
-In PHOIBLE we use the Unicode IPA symbols and not the keyboarded segments.
-
-Other segment conventions relevant to consonants are given below by subsection.
-
-### Aspiration
-
-For aspiration, the conventions include: 
-
-- Aspirated: pʰ
-- Preaspirated: ʰt
-- Breathy release: tɦ
-
-@drammock : but this is now changed since my thesis, we have:
-
-For aspiration we use:
-
-- for voiceless aspirated base segments: <ʰ> MODIFIER LETTER SMALL H (U+02B0)
-- for voiced aspirated base segments: <ʱ> MODIFIER LETTER SMALL H WITH HOOK (U+02B1)
-
-When a segment is devoiced, i.e. marked with a devoiced diacritic <̥> COMBINING RING BELOW (U+0325), then we use the <ʰ> MODIFIER LETTER SMALL H (U+02B0).
-
-
-### Double articulations
-
-We do not currently use a 'tie bar', i.e. COMBINING DOUBLE INVERTED BREVE (U+0361) or COMBINING DOUBLE BREVE BELOW (U+035C), to signal double articulations (e.g. affricates, clicks and diphthongs). So for example, <k͡p> and <t͜s> appear as <kp> and <ts> in inventories in PHOIBLE.
-
-Affricates are marked for homorganic place of articulation. For example, in SPA the 't/s-hacek-prenasalized' is indicated by the symbol <n̠t̠ʃ> and the 'voiceless retroflex sibilant affricate' in UPSID-451 is signaled by <ʈʂ>.
-
-
-### Fricatives
-
-SPA inlcudes cases like 'z-approximant' and ɻ-fricative; for these we followed the literature, which uses a downtack on a fricative to represent approximants and an uptack on approximants to make fricatives. 
-
-- r-approximant-retroflex <ɻ>
-- z-approximant-labialized-syllabic <z̞̩ʷ>
-- r-flap-fricative <ɾ>
-
-We use a lowered diacritic, the <o̞> COMBINING DOWN TACK BELOW (U+031E), with a fricative to make an approximant, e.g. SPA's 'beta-approximant' looks like <β̞>. The raised diacritic is also used with the pharyngeal fricative to indicate a voiced pharyngeal plosive <ʕ̝>.
-
-The upwards and downwards tacks are typically used for vowels.
-
-All 'affricated' trills and clicks are marked with the non-IPA diacritic <o͓> COMBINING X BELOW (U+0353), which we use to indicate 'frictionalized'. For example 'r-flap-fricative' in SPA and 'voiced alveolar fricative flap' in UPSID are both indicated as <ɾ͓>.
-
-UPSID-451 forces the distinction between sibilant and non-sibilant fricatives, so another non-IPA diacritic was selected. To mark 'non-sibilant' fricatives, we use the <o͇> COMBINING EQUALS SIGN BELOW (U+0347), e.g. 'r-fricative' is <z͇>.
+### Retroflex clicks
+Retroflex clicks are represented by `‼` (`203C` DOUBLE EXCLAMATION MARK). Note that `ǃ` (`01C3`, the symbol representing (post)alveolar clicks in the IPA) is confusingly referred to as “LATIN LETTER RETROFLEX CLICK” in the Unicode standard.
 
 ### Glottalization
+TODO: describe use of `ˀ` (`02C0` MODIFIER LETTER GLOTTAL STOP)
 
-Glottalization conventions include:
+### Summary table of PHOIBLE symbols not in the IPA
 
-- Preglottalized: ˀd
-- Glottalized / postglottalized: dˀ
-- Creaky voiced / laryngealized: d̰
+Glyph | Codepoint | Description                          | Meaning in PHOIBLE
+:----:|:---------:|:-------------------------------------|:------------------
+͈      | `0348`    | COMBINING DOUBLE VERTICAL LINE BELOW | Fortis
+͉      | `0349`    | COMBINING LEFT ANGLE BELOW           | Lenis
+͓      | `0353`    | COMBINING X BELOW                    | Frictionalized
+͇      | `0347`    | COMBINING EQUALS SIGN BELOW          | Non-sibilant
+‼     | `203C`    | DOUBLE EXCLAMATION MARK              | Retroflex click
+ˀ     | `02C0`    | MODIFIER LETTER GLOTTAL STOP         | (Pre-)glottalization
 
+## Idiosyncratic usages
+### Place matching
+In PHOIBLE, all affricates, prenasalized stops, and pre-stopped nasals adhere to strict place-matching. For example, although it is common to use `t` or `d` to designate the stop portion of all coronal affricates, in PHOIBLE a palatal affricate will always be represented as `cç` (not `tç`). A similar constraint holds for dental affricates `t̪s̪` and `t̪θ`, post-alveolar affricates `t̠ʃ` and `t̠ɕ`, and retroflex affricates `ʈʂ`.
 
-### Nasalization
+### Labialization, velarization and pharyngealization
+In PHOIBLE we do not use `̴` (`0334` COMBINING TILDE OVERLAY), which the IPA defines as a “velarized or pharyngealized” diacritic. For velarized articulations we use `ˠ` (`02E0` MODIFIER LETTER SMALL GAMMA), for pharyngealized articulations we use `ˤ` (`02E4` MODIFIER LETTER REVERSED GLOTTAL STOP).
 
-For prenasalized consonants, i.e. homorganic nasals, we use <NC> where <N> is a nasal that agrees in place of articulation with the following consonant, e.g. <mb>, <nd>, <ŋɡ>, etc. The character <ⁿ> SUPERSCRIPT LATIN SMALL LETTER N (U+8319) is used to indicate nasal release, e.g. the 'd-nasal-release' in UPSID-451 is given as <dⁿ>.
+The diacritic `ʷ` (`02B7` MODIFIER LETTER SMALL W) is strictly used to mark *labialization* and not *labio-velarization*. If a source describes a sound as “labio-velarized” we use modifier letters `ʷ` and `ˠ` together.
 
+### Aspiration, murmur, and breathy voicing
+Voiceless aspirated sounds are marked with the standard `ʰ` (`02B0` MODIFIER LETTER SMALL H). Voiceless sounds that are described as “pre-aspirated” are marked with the diacritic to the left of the base glyph: `ʰt`. Voiced sounds described as either “aspirated”, “breathy”, or “murmured” are marked with `̤` (`0324` COMBINING DIARESIS BELOW). Voiced sounds described as “pre-aspirated” are marked with `ʱ` (`02B1` MODIFIER LETTER SMALL H WITH HOOK) to the left of the base glyph: `ʱd`.
+
+### Glottalization, laryngealization, and creaky voicing
+Voiced sounds described as creaky or laryngealized are marked with `̰` (`0330` COMBINING TILDE BELOW). Sounds described as “glottalized” are marked with `ˀ` (`02C0` MODIFIER LETTER GLOTTAL STOP), unless the sound is voiceless and it is evident from the surrounding description that what is meant is that the consonant is ejective, in which case we use `ʼ` (`02BC` MODIFIER LETTER APOSTROPHE). Sounds described as “pre-glottalized” are marked with `ˀ` to the left of the base glyphː `ˀt`.
+
+### Lowered fricatives and raised approximants
+PHOIBLE somewhat grudgingly follows common practice in the literature in using the “uptack” and “downtack” to convert between fricative and approximant manners of articulation, when no suitable single glyph is available. For example, the Stanford Phonology Archive includes sounds described as “z-approximant” and “ɻ-fricative”, which we represent as `z̞` and `ɻ̝`, respectively. The raised diacritic is also used with the pharyngeal fricative to indicate a voiced pharyngeal plosive ʕ̝ <!-- really? -->
+
+### Low vowels
+As with all representations in PHOIBLE, we privilege the textual description of the original authors over their choice of symbols. Consequently, sounds described as “low back unrounded vowels” are represented as `ɑ` (`0251` LATIN SMALL LETTER ALPHA), even if the author used the keyboard `a` in his or her charts.
+
+### Diphthongs
+The glyphs `j`, `ɰ`, `ɥ`, `w` are considered consonants, and never occur as on- or off-glides in diphthongs and triphthongs. Instead, on- and off-glides use vowel symbols `i`, `ɯ`, `y`, and `u`. If necessary, the non-syllabic diacritic `̯` is used to disambiguate nucleus from glide portion (when such is indicated in the language description).
 
 ### Clicks
+Clicks are always represented in PHOIBLE as a combination of anterior and posterior articulations. The posterior articulation is given first, and indicates both place (velar or uvular) and phonation during the click. Posterior click glyphs thus comprise the set `k` `q` `ɡ` `ɢ` `ŋ` `ɴ`. Laryngeal/phonatory modifiers are placed on the posterior glyph: `ŋ̊ǃ`. The anterior place and manner of the click are then indicated with the usual IPA click symbols `ʘ` `ǀ` `ǁ` `ǃ` `ǂ` and the PHOIBLE symbol for retroflex clicks `‼`. Note also that alveolar and post-alveolar clicks are distinguished in PHOIBLE by the use of the retraction diacritic: `kǃ` for alveolar, `kǃ̠` for post-alveolar. See also the section on [frictionalized sounds](#frictionalized-sounds) for notation of frictionalized clicks.
 
-Clicks are ordered with the voice setting first:
+### Epilaryngeal phonation
+There are some rare articulations that make use of an epilaryngeal phonation mechanism (e.g., the “sphincteric vowels” of !Xóõ). To represent these vowels, we use `ᴱ` (`1D31` MODIFIER LETTER CAPITAL E) to denote sphincteric phonation. <!-- This is encoded in the feature system as “epilaryngeal source”. -->
 
-- <k> indicates voiceless
-- <ɡ> indicates voiced
-- <ŋ> indicates nasal
+### Double articulations / tie bars
+The representations of speech sounds in PHOIBLE do not make use of the tie bar (`0361` COMBINING DOUBLE INVERTED BREVE or `035C` COMBINING DOUBLE BREVE BELOW). The reasons for this choice are (1) it aids legibility when there are other diacritics, and (2) since the data are limited to single phonemes (i.e., there are no transcriptions of words or longer passages), there is no need to distinguish single phonemes from sequences. Put another way, every phoneme in PHOIBLE that is represented as a digraph has an implicit tiebar.
 
-Following the voice setting, the place/manner of the click is indicated, e.g. a voiceless alveolar click is encoded as <kǃ>. Laryngeal modifiers are placed on the voice setting and diacritics for place are placed on the symbol for the click. For example, a 'voiceless nasal palatoalveolar click': <ŋ̥ǃ̠>.
+## Ordering of diacritics and modifier letters
+*This section makes a distinction between “combining characters” and “spacing modifier letters”, which most linguists would group together under one term “diacritics”. Briefly, combining characters are diacritics that sit above or below the glyph they modify, or are superimposed on it (e.g., the tilde above a nasalized vowel `̃` is a combining character, encoded as `0303` in the Unicode standard). Spacing modifier letters are diacritics that sit next to the glyph they modify (e.g., the superscript `ʰ` used to indicate aspiration is a modifier letter, encoded as `02B0`).*
 
-All double exclamation marks should use <‼> DOUBLE EXCLAMATION MARK (U+203C).
+Each segment type that is composed of more than one character is first normalized into a canonical decomposition form that adheres to the [Unicode Normalization Form D (NFD)](http://unicode.org/reports/tr15/). However, the NFD algorithm does not define a prescribed order for all possible pairs of combining characters. For example, `0301` (combining acute accent) and `0308` (combining diaresis) are not re-ordered with respect to one another by the NFD algorithm, regardless of which order they occurred in the input string. PHOIBLE imposes an ordering that is consistent with NFD, but sets an explicit order for all combining characters used in the database. A ridid ordering for spacing modifier letters is also enforced. The chosen ordering is guided by the linguistic literature and typographical concerns, since to the best of our knowledge the IPA does not provide a recommended ordering for diacritics.
 
+The ordering conventions used in PHOIBLE are as follows: <!-- order from front of mouth to back wherever possible -->
 
-### Labialized
-
-Labialized segments are represented with the <ʷ> MODIFIER LETTER SMALL W (U+02B7), e.g. the 'labialized voiceless labio-velar plosive' in UPSID-451 is <kpʷ>. For velarized segments we use the <ˠ> MODIFIER LETTER SMALL GAMMA (U+02E0), e.g. SPA's 'd-velarized' is <dˠ>. Labiovelarized segments use the combination of both space modifying characters in this order: <ʷˠ>.
-
-Labialized and labiovelarized are treated the same and represented with a superscript: ʷ
-
-
-## Vowels
-
-When a low back unrounded vowel appears in a phonological description, we use the character <ɑ> LATIN SMALL LETTER ALPHA (U+0251), even if the author used the keyboard <a> in his or her phoneme inventory chart (which seems to be the case more often than not).
-
-For diphthongs we use <i> or <u> and not <j> or <w> to indicate the glide component of the diphthong. In cases in which this leads to a sequence of two identical vowels, we use the non-syllabic diacritic marker <o̯> COMBINING INVERTED BREVE BELOW (U+032F), e.g. SPA's 'i/yod' is marked with <ii̯>. Long vowels are marked with the length diacritic <ː>, e.g. SPA's 'iota-creaky voice-long' is <ɪ̰ː>.
-
+1. **Place features:** linguolabial `̼`, dental `̪`, apical `̺`, laminal `̻`, advanced `̟`, retracted `̠`
+2. **Manner features:** raised `̝`, lowered `̞`, advanced tongue root `̘`, retracted tongue root `̙`, frictionalized `͓`
+3. **Secondary articulations:** more round `̹`, less round `̜`, derhoticized `̮`
+4. **Laryngeal settings:** creaky `̰`, breathy `̤`, voiced `̬`, devoiced (below) `̥`, devoiced (above) `̊`
+5. **Syllabicity:** syllabic `̩` and non-syllabic markers `̯`
+6. **Vowel quality modifications**: nasalized `̃`, centralized `̈`, mid-centralized `̽`
+7. **Stop release**: unreleased `̚`  <!-- drammock thinks this should always be the last of the combining marks; rhotic hook should be first of spacing modifiers -->
+8. **Spacing modifier letters:** rhotic hook, nasal release, lateral release, labialized, palatalized, velarized, pharyngealized, glottalized, aspirated, ejective, long, half long ` ˞ⁿˡʷʲˠˤˀʰʼːˑ`
 
 ## Marginal phonemes
-
-Marginal phonemes are those that behave notably different phonologically than the majority of segments found in a particular language. Language contact factors contribute to marginal phonemes. For example, loanwords containing non-native sounds can introduce maringal phonemes into the borrowing language. There are varying degrees of 'marginal-ism'; see discussion in [x]. For PHOIBLE it would be ideal to create a ranking or vocabulary for varying degrees of marginal status  (perhaps along the line of 'anomalous' segments in UPSID [y]). To do so, we have collected any remarks about the marginality of segments as described in the resources from which we extracted inventories. However, since different authors use different descriptions of marginality, these have to be fit into some type of ranking. we propose adding this information in a future release of PHOIBLE. Currently we simply mark any type of phoneme described as marginal or loan by an author of a language description by enclosing those segments in less-than and greater-than symbols < >. 
-
-
-## Allophones
-
-Information about NA in the allophone column is now recorded on the wiki.
-
-
-## Decisions made regarding non-IPA characters
-
-### Epiglottal diacritic
-
-We use the modifier letter
-
-U+1D31 MODIFIER LETTER CAPITAL E <ᴱ>
-
-to denote epiglottal (E for epiglottal is easy to remember). 
-
-
-# References
-
-[x] [\citet{JelaskaMachata2005}]
-
-\cite[170]{Maddieson1984}.
+Marginal phonemes are those that are notably different phonologically from the majority of segments found in a particular language. For example, loanwords containing non-native sounds can introduce maringal phonemes into the borrowing language. Any type of phoneme described as “marginal” or “occurs only in loan words” is included in the database, but is marked as “marginal” (e.g., indicated by a boolean value in the `Marginal` column of the Rdata file).
