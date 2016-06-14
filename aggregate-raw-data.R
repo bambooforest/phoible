@@ -379,7 +379,7 @@ orderIPA <- function(strings, lang=NA, source=NA) {
             missing <- !typ %in% c("B", "M", "D", "T", "|")
             typ[missing] <- chr[missing]
             warning(paste("Unfamiliar glyph components.", "Phone:", i,
-                          "Codepoint:", typ[missing]),
+                          "Codepoint:", codepoints(typ[missing])),
                     call.=FALSE, immediate.=TRUE)
         }
         typstr <- paste(typ, collapse="")
