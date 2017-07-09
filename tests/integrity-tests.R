@@ -20,7 +20,10 @@ head(phoible.unique.iso); dim(phoible.unique.iso)
 iso639.3 <- read.csv("http://www-01.sil.org/iso639-3/iso-639-3.tab", sep="\t")
 unique.iso <- unique(iso639.3$Id)
 phoible.unique.iso$in.iso <- phoible.unique.iso$LanguageCode %in% unique.iso
-phoible.unique.iso %>% filter(!in.iso) # 14 records
+phoible.unique.iso %>% filter(!in.iso) # 14 records not valid
+
+# Test if Glottolog codes are valid
+## TODO
 
 # Tests if trump order is working correctly
 trumped <- subset(final.data, Trump)
