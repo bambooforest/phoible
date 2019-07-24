@@ -46,6 +46,8 @@ upsid_ipa_path <- file.path(data_dir, "UPSID", "UPSID_IPA_correspondences.tsv")
 ra_path <- file.path(data_dir, "RA", "Ramaswami1999.csv")
 saphon_path <- file.path(data_dir, "SAPHON", "saphon20121031.tsv")
 saphon_ipa_path <- file.path(data_dir, "SAPHON", "saphon_ipa_correspondences.tsv")
+# ah_path <- file.path(data_dir, "AH", "ah_inventories.tsv")
+ah_path <- file.path(data_dir, "AH", "ah_inventories.csv")
 
 ## ## ## ## ## ##
 ##  LOAD DATA  ##
@@ -225,6 +227,29 @@ saphon_data$Marginal <- NA
 ## clean up
 saphon_data <- validate_data(saphon_data, "saphon", debug=debug)
 if (!debug) rm(saphon_raw, saphon_ipa)
+
+## AH (ad-hoc) is a dense long format and is pre-generated before being added to the raw-data/AH directory
+cat("processing AH\n")
+# ah_raw <- read.delim(ah_path, blank.lines.skip=TRUE, na.strings = "NA")
+ah_raw <- read.csv(ah_path, blank.lines.skip=TRUE, na.strings = "NA")
+glimpse(ah_raw)
+ah_raw %>% filter(grepl("g", Phoneme))
+# write.csv(ah_raw, "ah-in-phoible.csv")
+dim(ah_raw)
+## clean up
+
+
+# TODO: figure out WTF we have differences between ah_data and ah_raw
+ah_data %>% filter(is.na(Phoneme))
+ah_data %>% filter(Phoneme=="")
+
+ah_data <- validate_data(ah_raw, "ah", debug=debug)
+ah_data %>% filter(Marginal==TRUE)
+
+write.csv(ah_data, file="ah_data_validated.csv")
+if (!debug) rm(uz_raw)
+
+
 
 
 ## ## ## ## ## ## ## ## ##
