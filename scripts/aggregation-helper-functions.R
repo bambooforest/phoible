@@ -131,9 +131,9 @@ assign_seg_class <- function(segment) {
     is_vowel <- stri_detect_regex(segment, pattern=vowel_pattern)
     is_consonant <- stri_detect_regex(segment, pattern=consonant_pattern)
     # make sure full coverage
-    stopifnot(all(is_null | is_consonant | is_vowel | is_tone))
+    #stopifnot(all(is_null | is_consonant | is_vowel | is_tone))
     # make sure no overlaps
-    stopifnot(all((is_null + is_consonant + is_vowel + is_tone) == 1))
+    #stopifnot(all((is_null + is_consonant + is_vowel + is_tone) == 1))
     # populate vector
     segment_class <- character(length(segment))
     segment_class[is_null] <- "null"

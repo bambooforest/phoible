@@ -9,7 +9,7 @@ library(stringi)  # for proper string handling & (de)normalization
 ## GLOBAL OPTIONS (restored at end)
 saf <- getOption("stringsAsFactors")
 options(stringsAsFactors=FALSE)
-debug <- FALSE
+debug <- TRUE
 
 ## FILE PATHS
 data_dir <- file.path("..", "raw-data")
@@ -52,6 +52,17 @@ ah_path <- file.path(data_dir, "AH", "ah_inventories.csv")
 ## ## ## ## ## ##
 ##  LOAD DATA  ##
 ## ## ## ## ## ##
+
+## AH (ad-hoc) is a dense long format and is pre-generated before being added to the raw-data/AH directory
+cat("processing AH\n")
+ah_raw <- read.csv(ah_path, na.strings = "NA")
+head(ah_raw)
+# ah_raw %>% filter(grepl("", Phoneme))
+# segments <- ah_raw %>% select(Phoneme) %>% distinct() %>% arrange(Phoneme)
+# segments <- order_ipa(segments$Phoneme)
+# TODO this is actually broke at the moment
+ah_data <- validate_data(ah_raw, "ah", debug=debug)
+if (!debug) rm(ah_raw)
 
 ## Australian Phonologies inventory data. All columns are dense:
 cat("processing ER\n")
@@ -228,29 +239,6 @@ saphon_data$Marginal <- NA
 saphon_data <- validate_data(saphon_data, "saphon", debug=debug)
 if (!debug) rm(saphon_raw, saphon_ipa)
 
-## AH (ad-hoc) is a dense long format and is pre-generated before being added to the raw-data/AH directory
-cat("processing AH\n")
-# ah_raw <- read.delim(ah_path, blank.lines.skip=TRUE, na.strings = "NA")
-ah_raw <- read.csv(ah_path, blank.lines.skip=TRUE, na.strings = "NA")
-glimpse(ah_raw)
-ah_raw %>% filter(grepl("g", Phoneme))
-# write.csv(ah_raw, "ah-in-phoible.csv")
-dim(ah_raw)
-## clean up
-
-
-# TODO: figure out WTF we have differences between ah_data and ah_raw
-ah_data %>% filter(is.na(Phoneme))
-ah_data %>% filter(Phoneme=="")
-
-ah_data <- validate_data(ah_raw, "ah", debug=debug)
-ah_data %>% filter(Marginal==TRUE)
-
-write.csv(ah_data, file="ah_data_validated.csv")
-if (!debug) rm(uz_raw)
-
-
-
 
 ## ## ## ## ## ## ## ## ##
 ## COMBINE DATA SOURCES ##
@@ -258,7 +246,7 @@ if (!debug) rm(uz_raw)
 
 ## combine into one data frame
 data_sources_list <- list(ph_data, aa_data, spa_data, upsid_data, ra_data,
-                          gm_data, saphon_data, uz_data, ea_data, er_data)
+                          gm_data, saphon_data, uz_data, ea_data, er_data, ah_data)
 all_data <- do.call(rbind, data_sources_list)
 all_data <- all_data[order(all_data$InventoryID),]
 
